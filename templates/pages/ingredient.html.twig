@@ -8,15 +8,18 @@
 	<div class="container">
 
 
-			<h1 class="my-5">Mes Ingredients</h1>
+		<h1 class="my-5">Mes Ingredients</h1>
 
 		{% if not ingredients is same as [] %}
-			<div class="count">
-				<h3 class="d-flex justify-content-center">
+			<div class="count d-flex justify-content-between">
+				<h3 class="d-flex align-items-center justify-content-center ms-auto">
 					<span class="bg-primary py-2 px-4 rounded-3">{{ingredients.getTotalItemCount}}
 						ingrédients au total.</span>
 				</h3>
 			</div>
+			<a href="{{path('ingredient.add') }}" class="btn btn-primary py-2 px-4 d-flex align-items-center text-black text-center">
+				<h4 class="mx-auto">Ajouter un ingrédient</h4>
+			</a>
 
 			<table class="table table-hover table-primary my-4">
 				<thead>
@@ -25,6 +28,8 @@
 						<th scope="col" class="bg-white border-black border-bottom-3">Nom</th>
 						<th scope="col" class="bg-white border-black border-bottom-3">Prix</th>
 						<th scope="col" class="bg-white border-black border-bottom-3">Date de Création</th>
+						<th scope="col" class="bg-white border-black border-bottom-3 text-center">Edition</th>
+						<th scope="col" class="bg-white border-black border-bottom-3 text-center">Suppression</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -35,6 +40,8 @@
 							<td>{{ingredient.price}}
 								€</td>
 							<td>{{ingredient.createdAt | date('D d M Y')}}</td>
+							<td class="text-center"><a href="{{path('ingredient.update', {id:ingredient.id})}}" class="btn btn-info ">✏️</a></td>
+							<td class="text-center"><a href="{{path('ingredient.delete', {id:ingredient.id})}}" class="btn btn-danger ">🗑️</a></td>
 							{# le "|" sert à créer des filtres #}
 						</tr>
 					{% endfor %}

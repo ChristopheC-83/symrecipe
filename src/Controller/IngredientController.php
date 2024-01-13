@@ -55,15 +55,23 @@ class IngredientController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
             $ingredient = $form->getData();
 
             $manager->persist($ingredient);
 
             $manager->flush();
-
-
+            $this->addFlash(
+                'success',
+                'Ajout avec succès de : ' . $ingredient->getName()
+            );
             return $this->redirectToRoute('ingredient.index');
-        } else {
+        } else if ($form->isSubmitted() && !$form->isValid()) {
+            $this->addFlash(
+                'danger',
+                'Echec lors de l\'ajout de l\'ingrédient'
+            );
+            return $this->redirectToRoute('ingredient.add');
         }
 
 
@@ -73,5 +81,60 @@ class IngredientController extends AbstractController
 
 
         ]);
+    }
+
+    #[Route('/ingredient/modifier/{id}', name: 'ingredient.update', methods: ['GET', 'POST'])]
+
+    public function updateIngredient(Ingredient $ingredient, Request $request, EntityManagerInterface $manager): Response
+
+    {
+
+        $form = $this->createForm(IngredientType::class, $ingredient);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $ingredient = $form->getData();
+
+            $manager->persist($ingredient);
+
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                'Modification avec succès de : ' . $ingredient->getName()
+            );
+            return $this->redirectToRoute('ingredient.index');
+        }
+        return $this->render('pages/updateIngredient.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    #[Route('/ingredient/supprimer/{id}', name: 'ingredient.delete', methods: ['GET', 'POST'])]
+
+    public function deleteIngredient(Ingredient $ingredient, Request $request, EntityManagerInterface $manager): Response
+
+    {
+
+        if ($ingredient) {
+
+            $manager->remove($ingredient);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Suppression effectuée de : ' . $ingredient->getName()
+            );
+
+            return $this->redirectToRoute('ingredient.index');
+        } else {
+            $this->addFlash(
+                'warning',
+                'Echec lors de la suppression de l\'ingrédient'
+            );
+            return $this->redirectToRoute('ingredient.index');
+        }
     }
 }
