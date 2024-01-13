@@ -6,31 +6,47 @@
 {% block body %}
 
 	<div class="container">
-		<h1 class="my-4">Mes Ingredients</h1>
 
-		<table class="table table-hover table-primary">
-			<thead>
-				<tr>
-					<th scope="col">ID</th>
-					<th scope="col">Nom</th>
-					<th scope="col">Prix</th>
-					<th scope="col">Date de Création</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for ingredient in ingredients %}
-					<tr>
-						<th scope="row">{{ingredient.id}}</th>
-						<td>{{ingredient.name}}</td>
-						<td>{{ingredient.price}} €</td>
-						<td>{{ingredient.createdAt | date('D d M Y')}}</td>   
-                        {# le "|" sert à créer des filtres #}
+
+			<h1 class="my-5">Mes Ingredients</h1>
+
+		{% if not ingredients is same as [] %}
+			<div class="count">
+				<h3 class="d-flex justify-content-center">
+					<span class="bg-primary py-2 px-4 rounded-3">{{ingredients.getTotalItemCount}}
+						ingrédients au total.</span>
+				</h3>
+			</div>
+
+			<table class="table table-hover table-primary my-4">
+				<thead>
+					<tr class="bg-white">
+						<th scope="col" class="bg-white border-black border-bottom-3">ID</th>
+						<th scope="col" class="bg-white border-black border-bottom-3">Nom</th>
+						<th scope="col" class="bg-white border-black border-bottom-3">Prix</th>
+						<th scope="col" class="bg-white border-black border-bottom-3">Date de Création</th>
 					</tr>
-				{% endfor %}
+				</thead>
+				<tbody>
+					{% for ingredient in ingredients %}
+						<tr>
+							<th scope="row">{{ingredient.id}}</th>
+							<td>{{ingredient.name}}</td>
+							<td>{{ingredient.price}}
+								€</td>
+							<td>{{ingredient.createdAt | date('D d M Y')}}</td>
+							{# le "|" sert à créer des filtres #}
+						</tr>
+					{% endfor %}
 
-			</tbody>
-		</table>
-
+				</tbody>
+			</table>
+			<div class="navigation d-flex justify-content-center">
+				{{ knp_pagination_render(ingredients) }}
+			</div>
+		{% else %}
+			<h4>Il n'a pas d'ingredient pour le moment.</h4>
+		{% endif %}
 	</div>
 
 
