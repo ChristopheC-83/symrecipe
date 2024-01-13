@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SymRecipe || Ingredients
+{% endblock %}
+
+{% block body %}
+
+	<div class="container">
+		<h1 class="my-4">Mes Ingredients</h1>
+
+		<table class="table table-hover table-primary">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Nom</th>
+					<th scope="col">Prix</th>
+					<th scope="col">Date de Création</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for ingredient in ingredients %}
+					<tr>
+						<th scope="row">{{ingredient.id}}</th>
+						<td>{{ingredient.name}}</td>
+						<td>{{ingredient.price}} €</td>
+						<td>{{ingredient.createdAt | date('D d M Y')}}</td>   
+                        {# le "|" sert à créer des filtres #}
+					</tr>
+				{% endfor %}
+
+			</tbody>
+		</table>
+
+	</div>
+
+
+{% endblock %}
